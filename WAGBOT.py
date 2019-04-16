@@ -10,7 +10,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print("------------------")
-    await client.change_presence(game=discord.Game(name='열일중입니다!', type=1))
+    await client.change_presence(game=discord.Game(name='We Are Gamers!', type=1))
 
 
 @client.event
