@@ -1,23 +1,40 @@
 import discord
-import os
+import datetime
 
-client = discord.Client()
+class MyClient(discord.Client):
+    async def on_ready(self):
+        print('Logged in as')
+        print(self.user.name)
+        print(self.user.id)
+        print('------')
+
+    async def on_message(self, message):
+        # we do not want the bot to reply to itself
+        if message.author.id == self.user.id:
+            return
+
+        if message.content.startswith('!안녕'):
+            await message.channel.send('안녕하세요. {0.author.mention}'.format(message))
+
+        if message.content.startswith('!규칙'):
+            await message.channel.send('{0.author.mention}님 #규칙 을 이용해주세요. 지키지 않을시 경고를 받습니다.'.format(message))
+
+        if message.content.startswith('!명령어'):
+            await message.channel.send('{0.author.mention}님 여기 명령어 목록 입니다.'.format(message))
+            await message.channel.send('!규칙'.format(message))
+            await message.channel.send('!안녕'.format(message))
+            await message.channel.send('!정보'.format(message))
+
+        if message.content.startswith('!정보'):
+            date = datetime.datetime.utcfromtimestamp(((int(message.author.id) >> 22) + 1420070400000) / 1000)
+            embed = discord.Embed(color=0x00ff00)
+            embed.add_field(name="이름", value=message.author.name, inline=True)
+            embed.add_field(name="서버닉네임", value=message.author.display_name, inline=True)
+            embed.add_field(name="아이디   ", value=message.author.id, inline=True)
+            embed.set_thumbnail(url=message.author.avatar_url)
+            await message.channel.send(message.channel, embed=embed)
 
 
-@client.event
-async def on_ready():
-    print("login")
-    print(client.user.name)
-    print(client.user.id)
-    print("------------------")
-    await client.change_presence(game=discord.Game(name='We Are Gamers!', type=1))
 
-
-@client.event
-async def on_message(message):
-    if message.content.startswith("!규칙"):
-        await client.send_message(message.channel, "#규칙 에서 규칙을 확인하실 수 있습니다! 규칙이 바뀌면 #공지 에서 공지가 되니 확인해주세요!")
-
-        
-access_token = os.environ["BOT_TOKEN"]        
-client.run('access_token')
+client = MyClient()
+client.run('NTY3NzIwNjg3MjQ3MTYzMzky.XLXpKQ.QOGeYWw3xyeqAO3s8TwhjBGcw0U')
