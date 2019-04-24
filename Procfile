@@ -1,1 +1,1 @@
-worker: python WAGBOT.py
+worker: python discordbot.py
