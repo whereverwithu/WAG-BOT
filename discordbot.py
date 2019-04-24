@@ -1,5 +1,10 @@
 import discord
 from discord.ext import commands
+from discord.ext.commands import Bot
+import asynico
+import random
+import request
+import os
 
 client = commands.Bot(command_prefix="!")
 
@@ -61,4 +66,4 @@ async def 엘팍(ctx):
     await ctx.send(embed=embed)
 
 
-client.run(TOKEN)
+client.run(str(os.environ.get('BOT_TOKEN')))
